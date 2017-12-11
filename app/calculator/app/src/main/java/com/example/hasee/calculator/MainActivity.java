@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private String operator;            //操作符：记录 + - * / 符号
     private double n1, n2, Result;     //操作数：操作符两端的数字，n1为左操作数，n2为右操作数。
     private TextView textView;          //文本框：显示计算过程和计算结果
+    private Button buttn[]=new Button[11];
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0;   //按钮：十个数字
     private Button btnPlus, btnMinus, btnMultiply, btnDivide;              //按钮：加减乘除
     private Button btnPoint, btnEqual, btnClear;                          //按钮：小数点，等号，清空
@@ -32,53 +33,13 @@ public class MainActivity extends AppCompatActivity {
             DecimalFormat MyFormat = new DecimalFormat("###.##");//控制Double转为String的格式
 
             try {
+                for(int i=1;i<10;i++){
+                    if((Button)findViewById(button.getId())==buttn[i]){
+                        editText.setText(editText.getText().toString() + i);
+                    }
+                }
                 switch (button.getId())//获取点击按钮的ID，通过ID选择对应的选项执行
                 {
-                    case R.id.button1://如果点击了按钮：“1”
-                    {
-                        editText.setText(editText.getText().toString() + 1);//输入框末尾，添加一个“1”
-                        break;
-                    }
-                    case R.id.button2://2
-                    {
-                        editText.setText(editText.getText().toString() + 2);
-                        break;
-                    }
-                    case R.id.button3://3
-                    {
-                        editText.setText(editText.getText().toString() + 3);
-                        break;
-                    }
-                    case R.id.button4://4
-                    {
-                        editText.setText(editText.getText().toString() + +4);
-                        break;
-                    }
-                    case R.id.button5://5
-                    {
-                        editText.setText(editText.getText().toString() + 5);
-                        break;
-                    }
-                    case R.id.button6://6
-                    {
-                        editText.setText(editText.getText().toString() + 6);
-                        break;
-                    }
-                    case R.id.button7://7
-                    {
-                        editText.setText(editText.getText().toString() + 7);
-                        break;
-                    }
-                    case R.id.button8://8
-                    {
-                        editText.setText(editText.getText().toString() + 8);
-                        break;
-                    }
-                    case R.id.button9://9
-                    {
-                        editText.setText(editText.getText().toString() + 9);
-                        break;
-                    }
                     case R.id.button0://0
                     {
                         str = editText.getText().toString();
@@ -194,16 +155,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //获取按钮的id
-        btn1 = (Button) findViewById(R.id.button1);
-        btn2 = (Button) findViewById(R.id.button2);
-        btn3 = (Button) findViewById(R.id.button3);
-        btn4 = (Button) findViewById(R.id.button4);
-        btn5 = (Button) findViewById(R.id.button5);
-        btn6 = (Button) findViewById(R.id.button6);
-        btn7 = (Button) findViewById(R.id.button7);
-        btn8 = (Button) findViewById(R.id.button8);
-        btn9 = (Button) findViewById(R.id.button9);
-        btn0 = (Button) findViewById(R.id.button0);
+        buttn[1] = (Button) findViewById(R.id.button1);
+        buttn[2] = (Button) findViewById(R.id.button2);
+        buttn[3] = (Button) findViewById(R.id.button3);
+        buttn[4] = (Button) findViewById(R.id.button4);
+        buttn[5] = (Button) findViewById(R.id.button5);
+        buttn[6] = (Button) findViewById(R.id.button6);
+        buttn[7] = (Button) findViewById(R.id.button7);
+        buttn[8] = (Button) findViewById(R.id.button8);
+        buttn[9] = (Button) findViewById(R.id.button9);
+        buttn[0] = (Button) findViewById(R.id.button0);
         btnPlus = (Button) findViewById(R.id.buttonPlus);
         btnMinus = (Button) findViewById(R.id.buttonMinus);
         btnMultiply = (Button) findViewById(R.id.buttonMultiply);
@@ -212,16 +173,9 @@ public class MainActivity extends AppCompatActivity {
         btnEqual = (Button) findViewById(R.id.buttonEqual);
         btnClear = (Button) findViewById(R.id.buttonClear);
         //为按钮添加监听器
-        btn1.setOnClickListener(lisenter);
-        btn2.setOnClickListener(lisenter);
-        btn3.setOnClickListener(lisenter);
-        btn4.setOnClickListener(lisenter);
-        btn5.setOnClickListener(lisenter);
-        btn6.setOnClickListener(lisenter);
-        btn7.setOnClickListener(lisenter);
-        btn8.setOnClickListener(lisenter);
-        btn9.setOnClickListener(lisenter);
-        btn0.setOnClickListener(lisenter);
+        for(int i=0;i<10;i++){
+            buttn[i].setOnClickListener(lisenter);
+        }
         btnPlus.setOnClickListener(lisenter);
         btnMinus.setOnClickListener(lisenter);
         btnMultiply.setOnClickListener(lisenter);
