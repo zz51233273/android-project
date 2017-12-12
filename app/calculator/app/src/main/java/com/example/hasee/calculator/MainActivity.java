@@ -142,8 +142,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     }
-                    default:
-                        break;
                 }
             } catch (Exception e) {
             }
