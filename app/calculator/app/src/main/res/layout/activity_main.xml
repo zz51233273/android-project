@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:stretchColumns="*"
     android:layout_height="match_parent" >
+
     <TextView
         android:id="@+id/textviewdavid"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:gravity="right"
-        android:textSize="30sp"
-        android:text="TEXT"/>
+        android:layout_height="67dp"
+        android:gravity="left"
+        android:text="TEXT"
+        android:textSize="30sp" />
     <EditText
         android:id="@+id/editviewdavid"
         android:layout_width="wrap_content"
@@ -178,8 +179,28 @@
         android:layout_height="match_parent" >
 
         <Button
+            android:id="@+id/buttonSquare"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="^"/>
+
+        <Button
+            android:id="@+id/buttonSquareRoot"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="√"
+            />
+        <Button
+            android:id="@+id/buttonRandom"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="随机"
+            />
+        <Button
             android:id="@+id/buttonClear"
-            android:layout_span="4"
             android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

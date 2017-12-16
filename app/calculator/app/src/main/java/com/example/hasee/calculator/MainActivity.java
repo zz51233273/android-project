@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import java.text.DecimalFormat;
+import java.util.Random;
 
 // Edit by Hbu_David 2017.6.15
 // Upgrade to Android Studio 3.0.1 ,Gradle 4.1 ,David 2017.11.24
@@ -19,9 +21,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;          //文本框：显示计算过程和计算结果
     private Button buttn[]=new Button[11];
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0;   //按钮：十个数字
-    private Button btnPlus, btnMinus, btnMultiply, btnDivide;              //按钮：加减乘除
+    private Button btnPlus, btnMinus, btnMultiply, btnDivide;            //按钮：加减乘除
     private Button btnPoint, btnEqual, btnClear;                          //按钮：小数点，等号，清空
-
+    private Button btnSquare,btnSquareRoot;                               //按钮：平方，开方
+    private Button btnRandom;
+    private String[] calculates={"+","-","*","/","^","√"};
     private View.OnClickListener lisenter = new View.OnClickListener() {//侦听器
         @Override
         public void onClick(View view) {//点击事件
@@ -30,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
             editText.setCursorVisible(false);//隐藏输入框光标
             String str;
             Button button = (Button) view;   //把点击获得的id信息传递给button
-            DecimalFormat MyFormat = new DecimalFormat("###.##");//控制Double转为String的格式
-
+            DecimalFormat MyFormat = new DecimalFormat("###.####");//控制Double转为String的格式
+            Random random=new Random();
             try {
                 for(int i=1;i<10;i++){
                     if((Button)findViewById(button.getId())==buttn[i]){
@@ -107,6 +111,52 @@ public class MainActivity extends AppCompatActivity {
                         textView.setText(MyFormat.format(n1) + operator);
                         break;
                     }
+                    case R.id.buttonSquare:
+                    {
+                        str=editText.getText().toString();
+                        n1=Double.parseDouble(str);
+                        operator="^";
+                        editText.setText("");
+                        textView.setText(MyFormat.format(n1)+operator);
+                        break;
+                    }
+                    case R.id.buttonSquareRoot:
+                    {
+                        str=editText.getText().toString();
+                        operator="√";
+                        n1=Double.parseDouble(str);
+                        if(n1<0)textView.setText("开方数不能小于0！");
+                        else{
+                            Result=Math.sqrt(n1);
+                            textView.setText(operator+MyFormat.format(n1)+"="+MyFormat.format(Result));
+                            editText.setText(MyFormat.format(Result)+"");
+                        }
+                        break;
+                    }
+                    case R.id.buttonRandom:
+                    {
+                        editText.setText("");
+                        int pos=random.nextInt(calculates.length);
+                        operator=calculates[pos];
+                        n1=random.nextDouble()*random.nextInt(1000);
+                        n2=random.nextDouble()*random.nextInt(1000);
+                        if(operator=="+")Result=n1+n2;
+                        else if(operator=="-")Result=n1-n2;
+                        else if(operator=="*")Result = n1 * n2;
+                        else if(operator=="/"){
+                            if(n2==0)n2=1.0;
+                            Result=n1/n2;
+                        }
+                        else if(operator=="^"){
+                            n2=random.nextInt(8);
+                            Result=Math.pow(n1,n2);
+                        }
+                        textView.setText(MyFormat.format(n1) + operator + MyFormat.format(n2) + "=" + MyFormat.format(Result));
+                        if(operator=="√"){
+                            Result=Math.sqrt(n1);
+                            textView.setText(operator+MyFormat.format(n1)+"="+MyFormat.format(Result));
+                        }
+                    }
                     case R.id.buttonEqual://操作符=
                     {
                         if (operator == "+") {
@@ -139,6 +189,12 @@ public class MainActivity extends AppCompatActivity {
                                 textView.setText(MyFormat.format(n1) + operator + MyFormat.format(n2) + "=" + MyFormat.format(Result));
                                 editText.setText(MyFormat.format(Result) + "");
                             }
+                        }else if(operator=="^"){
+                            str=editText.getText().toString();
+                            n2=Double.parseDouble(str);
+                            Result=Math.pow(n1,n2);
+                            textView.setText(MyFormat.format(n1)+operator+MyFormat.format(n2)+"="+MyFormat.format(Result));
+                            editText.setText(MyFormat.format(Result) + "");
                         }
                         break;
                     }
@@ -170,10 +226,16 @@ public class MainActivity extends AppCompatActivity {
         btnPoint = (Button) findViewById(R.id.buttonPoint);
         btnEqual = (Button) findViewById(R.id.buttonEqual);
         btnClear = (Button) findViewById(R.id.buttonClear);
+        btnSquare=(Button)findViewById(R.id.buttonSquare);
+        btnSquareRoot=(Button)findViewById(R.id.buttonSquareRoot);
+        btnRandom=(Button)findViewById(R.id.buttonRandom);
         //为按钮添加监听器
         for(int i=0;i<10;i++){
             buttn[i].setOnClickListener(lisenter);
         }
+        btnRandom.setOnClickListener(lisenter);
+        btnSquareRoot.setOnClickListener(lisenter);
+        btnSquare.setOnClickListener(lisenter);
         btnPlus.setOnClickListener(lisenter);
         btnMinus.setOnClickListener(lisenter);
         btnMultiply.setOnClickListener(lisenter);
