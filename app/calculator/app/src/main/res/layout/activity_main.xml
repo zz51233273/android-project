@@ -2,24 +2,24 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:stretchColumns="*"
-    android:layout_height="match_parent" >
-
+    android:layout_height="match_parent"
+    android:background="@drawable/pic3">
     <TextView
         android:id="@+id/textviewdavid"
         android:layout_width="wrap_content"
         android:layout_height="67dp"
         android:gravity="left"
-        android:text="TEXT"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        />
     <EditText
         android:id="@+id/editviewdavid"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:gravity="right"
         android:textSize="30sp"
-        android:hint="Edit"
+        android:textColor="@color/black"
         android:textCursorDrawable="@null"
-
         />
     <View
         android:layout_width="match_parent"
@@ -32,8 +32,8 @@
         android:id="@+id/tableRow1"
         android:layout_weight="1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
-
+        android:layout_height="match_parent"
+        android:alpha="0.82">
         <Button
             android:id="@+id/button7"
             android:layout_width="wrap_content"
@@ -68,7 +68,8 @@
         android:id="@+id/tableRow2"
         android:layout_weight="1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:alpha="0.82">
 
         <Button
             android:id="@+id/button4"
@@ -104,7 +105,8 @@
         android:id="@+id/tableRow3"
         android:layout_weight="1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:alpha="0.82">
 
         <Button
             android:id="@+id/button1"
@@ -140,7 +142,8 @@
         android:id="@+id/tableRow4"
         android:layout_weight="1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:alpha="0.82">
 
         <Button
             android:id="@+id/button0"
@@ -176,7 +179,8 @@
         android:id="@+id/tableRow5"
         android:layout_weight="1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:alpha="0.82">
 
         <Button
             android:id="@+id/buttonSquare"
@@ -207,5 +211,4 @@
             android:text="clear" />
 
     </TableRow>
-
 </TableLayout>
