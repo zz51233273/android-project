@@ -170,17 +170,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-            <Button
-                android:id="@+id/button0"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="0"
-                android:textSize="25sp" />
+        <Button
+            android:id="@+id/button0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_span="2"
+            android:text="0"
+            android:textSize="25sp" />
 
-        </TableLayout>
 
         <Button
             android:id="@+id/buttonPoint"
