@@ -3,17 +3,11 @@
     android:layout_width="match_parent"
     android:stretchColumns="*"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/textviewdavid"
-        android:layout_width="wrap_content"
-        android:layout_height="67dp"
-        android:gravity="left"
-        android:textSize="30sp"
-        />
+
     <EditText
         android:id="@+id/editviewdavid"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="100dp"
         android:gravity="right"
         android:textSize="30sp"
         android:textCursorDrawable="@null"
@@ -176,12 +170,17 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button0"
+        <TableLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="25sp"
-            android:text="0" />
+            android:layout_height="wrap_content" >
+            <Button
+                android:id="@+id/button0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="0"
+                android:textSize="25sp" />
+
+        </TableLayout>
 
         <Button
             android:id="@+id/buttonPoint"
@@ -189,6 +188,14 @@
             android:textSize="25sp"
             android:layout_height="match_parent"
             android:text="." />
+
+        <Button
+            android:id="@+id/buttonEqual"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="=" />
+        
         <!--
         <Button
             android:id="@+id/buttonSquare"
@@ -206,12 +213,7 @@
             />
         -->
 
-        <Button
-            android:id="@+id/buttonEqual"
-            android:textSize="25sp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="=" />
+
 
     </TableRow>
 
