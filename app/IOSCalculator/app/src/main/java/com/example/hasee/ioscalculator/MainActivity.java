@@ -1,44 +1,46 @@
 package com.example.hasee.ioscalculator;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.TextView;
-import java.text.DecimalFormat;
-import java.util.Random;
 
-// Edit by Hbu_David 2017.6.15
-// Upgrade to Android Studio 3.0.1 ,Gradle 4.1 ,David 2017.11.24
+import java.text.DecimalFormat;
+
 
 public class MainActivity extends AppCompatActivity {
     //变量定义
     private EditText editText;          //输入框：用于输入数字
-    private String operator;            //操作符：记录 + - * / 符号
+    private String operator="";            //操作符：记录 + - * / 符号
     private double n1, n2, Result;     //操作数：操作符两端的数字，n1为左操作数，n2为右操作数。
-    //private double front;              //用于保存运算符左边的数值
     private Button buttn[]=new Button[11];
     private Button btnPlus, btnMinus, btnMultiply, btnDivide,btnPercent;            //按钮：加减乘除
     private Button btnPoint, btnEqual, btnClear,btnPlusMinus;                        //按钮：小数点，等号，清空，正负号
-    private Button btnSquare,btnSquareRoot;                                        //按钮：平方，开方
+    private Button btnSquare,btnSquareRoot;                                            //按钮：平方，开方
     private String[] calculates={"+","-","*","/","^","√"};
-    private boolean start=false,finish=false;                                       //用户开始运算 ； 一次运算完成
+    private boolean start=false,finish=false,isPercent=false,hasOperator=false;   //用户开始运算 ； 一次运算完成 ; 是否百分号运算;已有运算符
     private View.OnClickListener lisenter = new View.OnClickListener() {//侦听器
         @Override
         public void onClick(View view) {//点击事件
             editText = (EditText) findViewById(R.id.editviewdavid);//与XML中定义好的EditText控件绑定
-            editText.setCursorVisible(false);//隐藏输入框光标
+            editText.setCursorVisible(false);               //隐藏输入框光标
             String str;
-            Button button = (Button) view;   //把点击获得的id信息传递给button
+            Button button = (Button) view;                  //把点击获得的id信息传递给button
             DecimalFormat MyFormat = new DecimalFormat("###.####");//控制Double转为String的格式
             try {
                 for(int i=1;i<10;i++){
                     if((Button)findViewById(button.getId())==buttn[i]){
-                        if(operator!="")editText.setText("");
-                        editText.setText(editText.getText().toString() + i);
+                        if(hasOperator){                    //已有运算符，将文本框清空
+                            editText.setText("");
+                            hasOperator=false;
+                        }
+                        if(finish)editText.setText("");     //完成一次运算，清空
+                        if(isPercent)clear();
+                        str=editText.getText().toString()+i;
+                        double middle=Double.parseDouble(str);
+                        editText.setText(MyFormat.format(middle)+"");
                         start = true;
                         finish=false;
                     }
@@ -47,21 +49,21 @@ public class MainActivity extends AppCompatActivity {
                 {
                     case R.id.button0://0
                     {
-                        if(operator!="")str="";
-                        else str = editText.getText().toString();
+                        if(hasOperator){            //已有运算符，将文本框清空
+                            editText.setText("");
+                            hasOperator=false;
+                        }
+                        if(finish)editText.setText("");
+                        str = editText.getText().toString();
                         //此处可以考虑添加代码，限制用户输入00,000等 2017.6.15
-                        if(start==true) editText.setText(str + 0);
-                        else editText.setText("0");
+                        if(start==true) editText.setText(str + 0);      //用户开始使用
+                        else editText.setText("0");                     //防止显示多个0的情况
                         finish=false;
                         break;
                     }
                     case R.id.buttonClear://Clear
                     {
-                        editText.setText("");
-                        n1=n2=0;
-                        operator="";
-                        start=false;
-                        finish=false;
+                        clear();
                         break;
                     }
                     case R.id.buttonPoint://.
@@ -82,31 +84,54 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case R.id.buttonPlus://操作符+
                     {
-                        str = editText.getText().toString();
-                        n1 = Double.parseDouble(str);
+                        if(operator!=""){
+                            continueOperator();
+                        }
+                        else{
+                            str = editText.getText().toString();
+                            n1 = Double.parseDouble(str);
+                        }
                         operator = "+";
+                        hasOperator=true;
                         break;
                     }
+
                     case R.id.buttonMinus://操作符-
                     {
-                        str = editText.getText().toString();
-                        n1 = Double.parseDouble(str);
+                        if(operator!=""){
+                            continueOperator();
+                        }else{
+                            str = editText.getText().toString();
+                            n1 = Double.parseDouble(str);
+                        }
                         operator = "-";
+                        hasOperator=true;
                         break;
                     }
+
                     case R.id.buttonMultiply://操作符*
                     {
-                        str = editText.getText().toString();
-                        n1 = Double.parseDouble(str);
+                        if(operator!=""){
+                            continueOperator();
+                        }else{
+                            str = editText.getText().toString();
+                            n1 = Double.parseDouble(str);
+                        }
                         operator = "*";
+                        hasOperator=true;
                         break;
                     }
 
                     case R.id.buttonDivide://操作符 /
                     {
-                        str = editText.getText().toString();
-                        n1 = Double.parseDouble(str);
+                        if(operator!=""){
+                            continueOperator();
+                        }else{
+                            str = editText.getText().toString();
+                            n1 = Double.parseDouble(str);
+                        }
                         operator = "/";
+                        hasOperator=true;
                         break;
                     }
                     case R.id.buttonPercent://操作符百分号
@@ -115,8 +140,10 @@ public class MainActivity extends AppCompatActivity {
                             double per=Double.parseDouble(editText.getText().toString());
                             editText.setText(per/100+"");
                         }else{
-                            n1=n1/100;
+                            n1=Double.parseDouble(editText.getText().toString());
+                            n1=n1/100.0;
                             editText.setText(MyFormat.format(n1)+"");
+                            isPercent=true;
                         }
                         break;
                     }
@@ -124,8 +151,12 @@ public class MainActivity extends AppCompatActivity {
                     {
                         str=editText.getText().toString();
                         n1 = Double.parseDouble(str);
-                        n1=-n1;
-                        editText.setText(MyFormat.format(n1)+"");
+                        if(operator!=""){
+                            n1=-n1;
+                            editText.setText(MyFormat.format(n1)+"");
+                        }else{
+                            editText.setText(-n1+"");
+                        }
                         break;
                     }
                     /*
@@ -211,13 +242,14 @@ public class MainActivity extends AppCompatActivity {
                             n1=Result;
                             finish=true;
                         }else finish=false;
+                        operator="";
                         break;
                     }
                 }
             } catch (Exception e) {
             }
-            if(start == true)btnClear.setText("AC");
-            else btnClear.setText("C");
+            if(start == true)btnClear.setText("C");
+            else btnClear.setText("AC");
         }
     };
 
@@ -262,5 +294,44 @@ public class MainActivity extends AppCompatActivity {
         btnPoint.setOnClickListener(lisenter);
         btnEqual.setOnClickListener(lisenter);
         btnClear.setOnClickListener(lisenter);
+    }
+
+    public void clear(){
+        editText.setText("");
+        n1=n2=0;
+        operator="";
+        start=false;
+        finish=false;
+        hasOperator=false;
+        isPercent=false;
+    }
+    public void continueOperator(){
+        if(!hasOperator){   //运算符左右都是数值
+            String str=editText.getText().toString();
+            n2=Double.parseDouble(str);
+            if(operator=="+"){
+                n1=n1+n2;
+            }
+            else if(operator=="-"){
+                n1=n1-n2;
+            }
+            else if(operator=="*"){
+                n1=n1*n2;
+            }
+            else if(operator=="/"){
+                n1=n1/n2;
+            }
+            editText.setText(new DecimalFormat("###.####").format(n1)+"");
+        }
+    }
+    public void onConfigurationChanged(Configuration newConfig){
+       super.onConfigurationChanged(newConfig);
+        //切换为竖屏
+        if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_PORTRAIT) {
+        }
+
+        //切换为横屏
+        else if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {
+        }
     }
 }
