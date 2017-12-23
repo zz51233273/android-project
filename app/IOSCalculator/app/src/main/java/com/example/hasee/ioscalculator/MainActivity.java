@@ -3,6 +3,8 @@ package com.example.hasee.ioscalculator;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSquare,btnSquareRoot;                                            //按钮：平方，开方
     private String[] calculates={"+","-","*","/","^","√"};
     private boolean start=false,finish=false,isPercent=false,hasOperator=false;   //用户开始运算 ； 一次运算完成 ; 是否百分号运算;已有运算符
+    private String copyData;
     private View.OnClickListener lisenter = new View.OnClickListener() {//侦听器
         @Override
         public void onClick(View view) {//点击事件
@@ -333,5 +336,25 @@ public class MainActivity extends AppCompatActivity {
         //切换为横屏
         else if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {
         }
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //四个参数的含义:
+
+        // 1.group的id;2.item的id;3.是否排序;4.将要显示的内容
+        menu.add(0, 1, 0, "复制计算结果");
+        menu.add(0, 2, 0, "粘贴");
+
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 1:
+                if(editText!=null) copyData=editText.getText().toString();
+                break;
+            case 2:
+                editText.setText(copyData);
+                break;
+        }
+        return true;
     }
 }
