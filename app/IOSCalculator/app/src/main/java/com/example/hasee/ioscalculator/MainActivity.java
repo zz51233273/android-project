@@ -1,7 +1,9 @@
 package com.example.hasee.ioscalculator;
 
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
     private Button buttn[]=new Button[11];
     private Button btnPlus, btnMinus, btnMultiply, btnDivide,btnPercent;            //按钮：加减乘除
     private Button btnPoint, btnEqual, btnClear,btnPlusMinus;                        //按钮：小数点，等号，清空，正负号
+    private Button landButton[]=new Button[30];
     private Button btnSquare,btnSquareRoot;                                            //按钮：平方，开方
     private String[] calculates={"+","-","*","/","^","√"};
     private boolean start=false,finish=false,isPercent=false,hasOperator=false;   //用户开始运算 ； 一次运算完成 ; 是否百分号运算;已有运算符
     private String copyData;
+    private double savtion=0;                                                             //保存一个值
     private View.OnClickListener lisenter = new View.OnClickListener() {//侦听器
         @Override
         public void onClick(View view) {//点击事件
@@ -50,7 +54,39 @@ public class MainActivity extends AppCompatActivity {
                 }
                 switch (button.getId())//获取点击按钮的ID，通过ID选择对应的选项执行
                 {
-                    case R.id.button0://0
+                    case R.id.button00:     // (
+                    {
+
+                    }
+                    case R.id.button01:     // )
+                    {
+
+                    }
+                    case R.id.button02:     // mc
+                    {
+                        savtion=0;
+                    }
+                    case R.id.button03:     // m+
+                    {
+                        str = editText.getText().toString();
+                        double x = Double.parseDouble(str);
+                        savtion+=x;
+                        break;
+                    }
+                    case R.id.button04:     // m-
+                    {
+                        str = editText.getText().toString();
+                        double x = Double.parseDouble(str);
+                        savtion-=x;
+                        break;
+                    }
+                    case R.id.button05:     // mr
+                    {
+                        editText.setText(String.valueOf(savtion));
+                        break;
+                    }
+
+                    case R.id.button0:              //0
                     {
                         if(hasOperator){            //已有运算符，将文本框清空
                             editText.setText("");
@@ -162,30 +198,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     }
-                    /*
-                    case R.id.buttonSquare:
-                    {
-                        str=editText.getText().toString();
-                        n1=Double.parseDouble(str);
-                        operator="^";
-                        editText.setText("");
-                        textView.setText(MyFormat.format(n1)+operator);
-                        break;
-                    }
-                    case R.id.buttonSquareRoot:
-                    {
-                        str=editText.getText().toString();
-                        operator="√";
-                        n1=Double.parseDouble(str);
-                        if(n1<0)textView.setText("开方数不能小于0！");
-                        else{
-                            Result=Math.sqrt(n1);
-                            textView.setText(operator+MyFormat.format(n1)+"="+MyFormat.format(Result));
-                            editText.setText(MyFormat.format(Result)+"");
-                        }
-                        break;
-                    }
-                    */
                     case R.id.buttonEqual://操作符=
                     {
                         if (operator == "+") {
@@ -255,12 +267,40 @@ public class MainActivity extends AppCompatActivity {
             else btnClear.setText("AC");
         }
     };
+    void FindNewViewById(){
+        landButton[0]=(Button)findViewById(R.id.button00);
+        landButton[1]=(Button)findViewById(R.id.button01);
+        landButton[2]=(Button)findViewById(R.id.button02);
+        landButton[3]=(Button)findViewById(R.id.button03);
+        landButton[4]=(Button)findViewById(R.id.button04);
+        landButton[5]=(Button)findViewById(R.id.button05);
+        landButton[6]=(Button)findViewById(R.id.button10);
+        landButton[7]=(Button)findViewById(R.id.button11);
+        landButton[8]=(Button)findViewById(R.id.button12);
+        landButton[9]=(Button)findViewById(R.id.button13);
+        landButton[10]=(Button)findViewById(R.id.button14);
+        landButton[11]=(Button)findViewById(R.id.button15);
+        landButton[12]=(Button)findViewById(R.id.button20);
+        landButton[13]=(Button)findViewById(R.id.button21);
+        landButton[14]=(Button)findViewById(R.id.button22);
+        landButton[15]=(Button)findViewById(R.id.button23);
+        landButton[16]=(Button)findViewById(R.id.button24);
+        landButton[17]=(Button)findViewById(R.id.button25);
+        landButton[18]=(Button)findViewById(R.id.button30);
+        landButton[19]=(Button)findViewById(R.id.button31);
+        landButton[20]=(Button)findViewById(R.id.button32);
+        landButton[21]=(Button)findViewById(R.id.button33);
+        landButton[22]=(Button)findViewById(R.id.button34);
+        landButton[23]=(Button)findViewById(R.id.button35);
+        landButton[24]=(Button)findViewById(R.id.button40);
+        landButton[25]=(Button)findViewById(R.id.button41);
+        landButton[26]=(Button)findViewById(R.id.button42);
+        landButton[27]=(Button)findViewById(R.id.button43);
+        landButton[28]=(Button)findViewById(R.id.button44);
+        landButton[29]=(Button)findViewById(R.id.button45);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //获取按钮的id
+    }
+    void FindViewById(){    //获取按钮的id
         buttn[1] = (Button) findViewById(R.id.button1);
         buttn[2] = (Button) findViewById(R.id.button2);
         buttn[3] = (Button) findViewById(R.id.button3);
@@ -280,14 +320,12 @@ public class MainActivity extends AppCompatActivity {
         btnClear = (Button) findViewById(R.id.buttonClear);
         btnPlusMinus=(Button)findViewById(R.id.PlusMinus);
         btnPercent=(Button)findViewById(R.id.buttonPercent);
-        /*btnSquare=(Button)findViewById(R.id.buttonSquare);
-        btnSquareRoot=(Button)findViewById(R.id.buttonSquareRoot);*/
+    }
+    void ButtonClickListener(){
         //为按钮添加监听器
         for(int i=0;i<10;i++){
             buttn[i].setOnClickListener(lisenter);
         }
-        /*btnSquareRoot.setOnClickListener(lisenter);
-        btnSquare.setOnClickListener(lisenter);*/
         btnPercent.setOnClickListener(lisenter);
         btnPlusMinus.setOnClickListener(lisenter);
         btnPlus.setOnClickListener(lisenter);
@@ -298,7 +336,20 @@ public class MainActivity extends AppCompatActivity {
         btnEqual.setOnClickListener(lisenter);
         btnClear.setOnClickListener(lisenter);
     }
+    void ButtonNewClickListener(){
+        for(int i=0;i<30;i++){
+            landButton[i].setOnClickListener(lisenter);
+        }
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        FindViewById();
+        ButtonClickListener();
+
+    }
     public void clear(){
         editText.setText("");
         n1=n2=0;
@@ -327,23 +378,30 @@ public class MainActivity extends AppCompatActivity {
             editText.setText(new DecimalFormat("###.####").format(n1)+"");
         }
     }
+
     public void onConfigurationChanged(Configuration newConfig){
        super.onConfigurationChanged(newConfig);
-        //切换为竖屏
-        if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_PORTRAIT) {
-        }
-
-        //切换为横屏
-        else if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {
-        }
+       if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_PORTRAIT) {             //切换为竖屏
+           setContentView(R.layout.activity_main);
+           FindViewById();
+           ButtonClickListener();
+       }else if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {      //切换为横屏
+           setContentView(R.layout.activity_main_land);
+           FindViewById();
+           FindNewViewById();
+           ButtonClickListener();
+           ButtonNewClickListener();
+       }
     }
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
         //四个参数的含义:
 
         // 1.group的id;2.item的id;3.是否排序;4.将要显示的内容
         menu.add(0, 1, 0, "复制计算结果");
         menu.add(0, 2, 0, "粘贴");
-
+        menu.add(0, 3, 0, "关闭计算器");
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -354,7 +412,28 @@ public class MainActivity extends AppCompatActivity {
             case 2:
                 editText.setText(copyData);
                 break;
+            case 3:
+                onDialogClickFinish();
+                break;
         }
         return true;
+    }
+
+    private void onDialogClickFinish(){
+        new AlertDialog.Builder(MainActivity.this)
+                .setIcon(android.R.drawable.alert_dark_frame)
+                .setTitle("注意!!")
+                .setMessage("确定要退出么??")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        finish();       //Exit Activity
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                })
+                .create()
+                .show();
     }
 }
