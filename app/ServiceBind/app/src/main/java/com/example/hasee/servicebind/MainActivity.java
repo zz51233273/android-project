@@ -14,10 +14,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ServiceConnection connection = new ServiceConnection() {
         @Override
-        public void onServiceDisconnected(ComponentName arg0) {//活动与服务连接断开时调用
+        public void onServiceDisconnected(ComponentName arg0) {             //活动与服务连接断开时调用
         }
+
         @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {//活动与服务成功绑定时调用
+        public void onServiceConnected(ComponentName name, IBinder service) {   //活动与服务成功绑定时调用
             downloadBinder = (MyService.DownloadBinder) service;
             downloadBinder.startDownload();
             downloadBinder.getProgress();

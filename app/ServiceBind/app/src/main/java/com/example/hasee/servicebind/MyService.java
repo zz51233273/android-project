@@ -7,19 +7,21 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class MyService extends Service {
-    public MyService() {}
+    public MyService(){}
     // 服务创建的时候使用
     @Override
-    public void onCreate() {
+    public void onCreate(){
         super.onCreate();
         Log.d("MyService","onCreate executed");
     }
+
     // 服务启动的时候调用
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("MyService","onStartCommand executed");
         return super.onStartCommand(intent, flags, startId);
     }
+
     // 服务销毁的时候调用
     @Override
     public void onDestroy() {
@@ -28,7 +30,7 @@ public class MyService extends Service {
     }
     ////////////////////////////////////////////////////////////////////
     private DownloadBinder mBinder = new DownloadBinder();
-    class DownloadBinder extends Binder {
+    class DownloadBinder extends Binder {       //自定义的内部类，继承Binder
         public void startDownload() {
             Log.d("MyService", "开始下载！");
         }
