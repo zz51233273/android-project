@@ -16,14 +16,12 @@ public class BroadcastActivity extends Activity {
         setContentView(R.layout.main);
         Button button = (Button)super.findViewById(R.id.button);
         button.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                String Intent_Action = "com.android.BroadcastReceiverDemo";
+                String Intent_Action = "com";
                 Intent intent = new Intent(Intent_Action);
                 sendBroadcast(intent);
-                Log.e("BroadcastReceiver","sendbroadcast");
+                Log.d("BroadcastReceiver","sendbroadcast");
             }
         });
 

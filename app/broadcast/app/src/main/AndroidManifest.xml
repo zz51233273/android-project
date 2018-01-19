@@ -14,8 +14,8 @@
             </intent-filter>
         </activity>
         <receiver android:name=".BroadcastReceiverActivity">
-            <intent-filter >
-                <action android:name="com.android.BroadcastReceiverDemo"/>
+            <intent-filter android:priority="1000">
+                <action android:name="com"/>
             </intent-filter>
         </receiver>
     </application>

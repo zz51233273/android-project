@@ -12,8 +12,9 @@ public class BroadcastReceiverActivity extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
         String Intent_Action = intent.getAction();
-        if("com.android.BroadcastReceiverDemo".equals(Intent_Action)){
-            Log.e("BroadcastReceiver","onReceive");
+        Log.d("Receiver","onReceiving");
+        if("com".equals(Intent_Action)){
+            Log.d("Receiver","onReceive");
         }
     }
 }

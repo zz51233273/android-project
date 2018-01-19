@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent("com.example.hasee.broadcastcustom.MY_BROADCAST");
+                Intent intent = new Intent("com.example.broadcastcustom.MY_BROADCAST");
                 sendBroadcast(intent);
             }
         });
