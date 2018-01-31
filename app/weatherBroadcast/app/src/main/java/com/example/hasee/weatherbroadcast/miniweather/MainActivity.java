@@ -8,9 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +26,8 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.example.hasee.weatherbroadcast.bean.TodayWeather;
+import com.example.hasee.weatherbroadcast.database.WriteSql;
 import com.example.hasee.weatherbroadcast.util.NetUtil;
 
 
@@ -66,7 +62,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
-
+        WriteData();
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
 
@@ -295,4 +291,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private void WriteData(){   //将数据写入手机
+        Intent i=new Intent(this,WriteSql.class);
+        startActivity(i);
+    }
 }

@@ -58,7 +58,6 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
             provinces=new ArrayList<>();
             addProvinces();
         }
-
         citys=new ArrayList<>();
         codes=new ArrayList<>();
 
@@ -80,7 +79,6 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
 
         spinner1.setTag(1);     //设置标签，用于判断当前选择了哪一个下拉框
         spinner2.setTag(2);
-
     }
 
     @Override

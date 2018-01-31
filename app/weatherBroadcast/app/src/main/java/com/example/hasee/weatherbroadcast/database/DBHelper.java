@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {//建立数据库
-        String CREATE_TABLE_CITY = "CREATE TABLE if not exists " + City.TABLE  + "("
+/*        String CREATE_TABLE_CITY = "CREATE TABLE if not exists " + City.TABLE  + "("
                 +City.KEY_ID  + " INTEGER PRIMARY KEY ,"
                 +City.KEY_PROVINCE + " TEXT, "
                 +City.KEY_CITY + " TEXT, "
@@ -25,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 +City.KEY_ALLPY+" TEXT, "
                 +City.KEY_ALLFIRSTPY + " TEXT, "
                 +City.KEY_FIRSTPY +" TEXT )";
-        db.execSQL(CREATE_TABLE_CITY);
+        db.execSQL(CREATE_TABLE_CITY);*/
     }
 
 
