@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //SqlScoutServer.create(this, getPackageName());
+        SqlScoutServer.create(this, getPackageName());
     }
 
     public void createDatabase(View view) {//创建数据库
@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     }
 
     public void Clear(View view) {//清空数据库中的数据
-        db.execSQL("delete from student");//
+        db.execSQL("delete from student");
     }
 
     public void Select(View view) {//查询数据库中的数据
