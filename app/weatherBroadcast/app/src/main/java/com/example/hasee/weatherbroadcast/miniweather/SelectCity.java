@@ -109,14 +109,14 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
 
     }
     public void chooseProvine(){
-        database = dbHelper.getWritableDatabase();//创建数据库对象
+        database = dbHelper.getWritableDatabase();  //创建数据库对象
         Cursor cursor=null;
 
         /*
             实现功能：选择城市时，下拉框默认值为主页面所选的省份和城市
          */
         String defCity="";
-        if(!flag&&!"".equals(getIntent().getStringExtra("keycode"))){       //设置省份默认值，此页面中只执行一次
+        if(!flag&&!"".equals(getIntent().getStringExtra("keycode"))){          //设置省份默认值，此页面中只执行一次
             cursor=dbHelper.QueryByCode(database,getIntent().getStringExtra("keycode"));
             if (cursor.moveToFirst()) {
                 int pos=adapter1.getPosition(cursor.getString(cursor.getColumnIndex(City.KEY_PROVINCE)));   //得到一个省在下拉框中的位置
@@ -140,7 +140,6 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
             spinner2.setSelection(pos);             //设置spinner2下拉框默认值
             flag=true;
         }
-
         database.close();
     }
     @Override
