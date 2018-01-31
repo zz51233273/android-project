@@ -28,19 +28,6 @@ public class WriteSql extends Activity {
         //将raw目录下的db文件，存入<包名>/databases/目录下
         writeDB();
         Log.d("test", "DB uri : "+ getDatabasePath("city.db"));
-
-        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(f, MODE_PRIVATE, null);
-        Cursor cursor = sqLiteDatabase.query("city", null, null, null, null, null, null);
-        if(cursor.moveToFirst()){
-            do{
-                int columnIndex = cursor.getColumnIndex(City.KEY_PROVINCE);
-                String province = cursor.getString(columnIndex);
-                columnIndex = cursor.getColumnIndex(City.KEY_CITY);
-                String city = cursor.getString(columnIndex);
-
-                Log.d("test","province : "+ province +" , city : "+ city );
-            }while (cursor.moveToNext());
-        }
         finish();
     }
 
