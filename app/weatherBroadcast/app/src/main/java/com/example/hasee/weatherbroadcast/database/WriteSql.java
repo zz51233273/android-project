@@ -27,7 +27,6 @@ public class WriteSql extends Activity {
         setContentView(R.layout.weather_info);
         //将raw目录下的db文件，存入<包名>/databases/目录下
         writeDB();
-        Log.d("test", "DB uri : "+ getDatabasePath("city.db"));
         finish();
     }
 
