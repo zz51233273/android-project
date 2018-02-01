@@ -27,7 +27,7 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.example.hasee.weatherbroadcast.database.WriteSql;
+import com.example.hasee.weatherbroadcast.database.DBManager;
 import com.example.hasee.weatherbroadcast.util.NetUtil;
 
 
@@ -62,10 +62,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
-        WriteData();
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
-
+        DBManager dbManager=new DBManager(getApplicationContext());
+        dbManager.WriteData();
         //判断网络状态
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d("myWeather", "网络OK");
@@ -291,8 +291,4 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void WriteData(){   //将数据写入手机
-        Intent i=new Intent(this,WriteSql.class);
-        startActivity(i);
-    }
 }
