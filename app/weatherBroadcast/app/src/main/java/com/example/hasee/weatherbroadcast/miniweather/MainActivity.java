@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onResume();
         initPermission();//针对6.0以上版本做权限适配
         if (flag) {
-            getGPSLocation();
+            getNetworkLocation();
         }
     }
 
@@ -142,7 +142,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         else if(view.getId()==R.id.title_location){
             if (flag) {
-                getGPSLocation();
+                getNetworkLocation();
             } else {
                 Toast.makeText(this, "no permission", Toast.LENGTH_SHORT).show();
             }
@@ -364,7 +364,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void getNetworkLocation() {
         Location net = LocationUtils.getNetWorkLocation(this);
         if (net == null) {
-            Toast.makeText(this, "net location is null", Toast.LENGTH_SHORT).show();
+            //设置定位监听
+            LocationUtils.addLocationListener(this, LocationManager.GPS_PROVIDER, new LocationUtils.ILocationListener() {
+                @Override
+                public void onSuccessLocation(Location location) {
+                    if (location != null) {
+                        Toast.makeText(MainActivity.this, "net onSuccessLocation location:  lat==" + location.getLatitude() + "     lng==" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "net location is null", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         } else {
             Toast.makeText(this, "network location: lat==" + net.getLatitude() + "  lng==" + net.getLongitude(), Toast.LENGTH_SHORT).show();
         }

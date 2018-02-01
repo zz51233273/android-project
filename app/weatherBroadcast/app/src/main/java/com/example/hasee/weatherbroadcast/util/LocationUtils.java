@@ -63,7 +63,7 @@ public class LocationUtils {
             //获取最后的GPS定位信息，如果是第一次打开，一般会拿不到定位信息，一般可以请求监听，在有效的时间范围可以获取定位信息
             location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
-        Log.d("test", manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)+"");
+
         return location;
     }
 
@@ -81,6 +81,7 @@ public class LocationUtils {
             //获取最后的network定位信息
             location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
+        Log.d("test", manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)+"");
         return location;
     }
 
