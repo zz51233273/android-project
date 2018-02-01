@@ -1,17 +1,25 @@
 package com.example.hasee.weatherbroadcast.miniweather;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hasee.weatherbroadcast.util.LocationUtils;
 import com.example.hasee.weatherbroadcast.R;
 import com.example.hasee.weatherbroadcast.bean.TodayWeather;
 
@@ -36,14 +44,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final int UPDATE_TODAY_WEATHER = 1;
 
     private ImageView mUpdateBtn;
-
+    private ImageView gps_btn;
     private ImageView mCitySelect;
-
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv,
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
 
     private String code="";
+    private  boolean flag=false;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -62,10 +70,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
-        mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
-        mUpdateBtn.setOnClickListener(this);
-        DBManager dbManager=new DBManager(getApplicationContext());
-        dbManager.WriteData();
+        new DBManager(getApplicationContext()).writeData();
         //判断网络状态
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d("myWeather", "网络OK");
@@ -74,12 +79,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Log.d("myWeather", "网络挂了");
             Toast.makeText(MainActivity.this, "网络挂了！", Toast.LENGTH_LONG).show();
         }
-        mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
-        mCitySelect.setOnClickListener(this);
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initPermission();//针对6.0以上版本做权限适配
+        if (flag) {
+            getGPSLocation();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocationUtils.unRegisterListener(this);
+    }
     void initView(){        //初始化对象
+        mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
+        mUpdateBtn.setOnClickListener(this);
+        gps_btn=(ImageView)findViewById(R.id.title_location);
+        gps_btn.setOnClickListener(this);
+        mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
+        mCitySelect.setOnClickListener(this);
         city_name_Tv = (TextView) findViewById(R.id.title_city_name);
         cityTv = (TextView) findViewById(R.id.city);
         timeTv = (TextView) findViewById(R.id.time);
@@ -114,15 +137,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
             startActivity(i);
 
         }
-
-        if (view.getId() == R.id.title_update_btn) {        //点击更新按钮
+        else if (view.getId() == R.id.title_update_btn) {        //点击更新按钮
             updateWeatherData();
+        }
+        else if(view.getId()==R.id.title_location){
+            if (flag) {
+                getGPSLocation();
+            } else {
+                Toast.makeText(this, "no permission", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    /**
-     * @param cityCode
-     */
     private void queryWeatherCode(String cityCode) {
         final String address = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
 
@@ -291,4 +317,56 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private void initPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //检查权限
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //请求权限
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                flag = true;
+            }
+        } else {
+            flag = true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            flag = grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    //通过GPS获取定位信息
+    public void getGPSLocation() {
+        Location gps = LocationUtils.getGPSLocation(this);
+        if (gps == null) {
+            //设置定位监听，因为GPS定位，第一次进来可能获取不到，通过设置监听，可以在有效的时间范围内获取定位信息
+            LocationUtils.addLocationListener(this, LocationManager.GPS_PROVIDER, new LocationUtils.ILocationListener() {
+                @Override
+                public void onSuccessLocation(Location location) {
+                    if (location != null) {
+                        Toast.makeText(MainActivity.this, "gps onSuccessLocation location:  lat==" + location.getLatitude() + "     lng==" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "gps location is null", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "gps location: lat==" + gps.getLatitude() + "  lng==" + gps.getLongitude(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //通过网络等获取定位信息
+    private void getNetworkLocation() {
+        Location net = LocationUtils.getNetWorkLocation(this);
+        if (net == null) {
+            Toast.makeText(this, "net location is null", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "network location: lat==" + net.getLatitude() + "  lng==" + net.getLongitude(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

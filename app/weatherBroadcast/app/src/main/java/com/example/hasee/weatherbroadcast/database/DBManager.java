@@ -23,13 +23,12 @@ public class DBManager {
     }
 
     //对外提供的写入数据接口
-    public void WriteData() {
-        Log.d("test",DB_PATH);
-        this.WriteData(DB_PATH + "/databases");
+    public void writeData() {
+        this.writeData(DB_PATH + "/databases");
     }
 
     // 写入数据方法
-    private void WriteData(String filePath) {
+    private void writeData(String filePath) {
         try {
             File file = new File(filePath);
             if (!file.exists()) { //判断文件是否存在
