@@ -84,10 +84,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //判断网络状态
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d("myWeather", "网络OK");
-            Toast.makeText(MainActivity.this, "网络OK！", Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this, "网络OK！", Toast.LENGTH_LONG).show();
         } else {
             Log.d("myWeather", "网络挂了");
-            Toast.makeText(MainActivity.this, "网络挂了！", Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this, "网络挂了！", Toast.LENGTH_LONG).show();
         }
         initView();
         JudgePermission();
@@ -350,6 +350,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             currentPosition.append("[城市]").append(location.getCity()).append("\n");
             currentPosition.append("[区县]").append(location.getDistrict()).append("\n");
             currentPosition.append("[街道]").append(location.getStreet());
+            Toast.makeText(MainActivity.this,location.getCity(),Toast.LENGTH_LONG).show();
             Log.d("test",currentPosition+"");
         }
     }
