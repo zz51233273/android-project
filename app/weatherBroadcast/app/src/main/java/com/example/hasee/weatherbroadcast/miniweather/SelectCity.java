@@ -150,9 +150,9 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
         if (cursor.moveToFirst()) {
             do {
                 City c = new City();
-                c.province = cursor.getString(cursor.getColumnIndex(c.KEY_PROVINCE));
-                if(provinces.indexOf(c.province)==-1){      //保证省份不重复出现
-                    provinces.add(c.province);
+                c.setProvince(cursor.getString(cursor.getColumnIndex(c.KEY_PROVINCE)));
+                if(provinces.indexOf(c.getProvince())==-1){      //保证省份不重复出现
+                    provinces.add(c.getProvince());
                 }
             } while (cursor.moveToNext());
         }
@@ -162,10 +162,10 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
         if (cursor.moveToFirst()) {
             do {
                 City c = new City();
-                c.cityName = cursor.getString(cursor.getColumnIndex(c.KEY_CITY));
-                c.code= Integer.parseInt(cursor.getString(cursor.getColumnIndex(c.KEY_CODE)));
-                citys.add(c.cityName);
-                codes.add(String.valueOf(c.code));
+                c.setCityName(cursor.getString(cursor.getColumnIndex(c.KEY_CITY)));
+                c.setCode(cursor.getInt(cursor.getColumnIndex(c.KEY_CODE)));
+                citys.add(c.getCityName());
+                codes.add(String.valueOf(c.getCode()));
             } while (cursor.moveToNext());
         }
     }
