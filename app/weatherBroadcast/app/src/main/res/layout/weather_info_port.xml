@@ -202,7 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/weather_img"
-                    android:layout_marginTop="60dip"
+                    android:layout_marginTop="45dip"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="星期三"
