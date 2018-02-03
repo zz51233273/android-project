@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -77,10 +78,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.weather_info);
-        mLocationClient = new LocationClient(getApplicationContext());//声明LocationClient类
-        mLocationClient.registerLocationListener(BaiDuListener);    //注册监听函数
+        setContentView(R.layout.weather_info_port);
         new DBManager(getApplicationContext()).writeData();
+        init();
+    }
+    void init(){
         //判断网络状态
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d("myWeather", "网络OK");
@@ -94,6 +96,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     void initView(){        //初始化对象
+        mLocationClient = new LocationClient(getApplicationContext());//声明LocationClient类
+        mLocationClient.registerLocationListener(BaiDuListener);    //注册监听函数
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
         lbs_btn=(ImageView)findViewById(R.id.title_location);
@@ -113,16 +117,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         windTv = (TextView) findViewById(R.id.wind);
         weatherImg = (ImageView) findViewById(R.id.weather_img);
 
-        city_name_Tv.setText("N/A");
-        cityTv.setText("N/A");
-        timeTv.setText("N/A");
-        humidityTv.setText("N/A");
-        pmDataTv.setText("N/A");
-        pmQualityTv.setText("N/A");
-        weekTv.setText("N/A");
-        temperatureTv.setText("N/A");
-        climateTv.setText("N/A");
-        windTv.setText("N/A");
+        city_name_Tv.setText("");
+        cityTv.setText("");
+        timeTv.setText("");
+        humidityTv.setText("");
+        pmDataTv.setText("");
+        pmQualityTv.setText("");
+        weekTv.setText("");
+        temperatureTv.setText("");
+        climateTv.setText("");
+        windTv.setText("");
+        weatherImg.setImageResource(R.drawable.na);
     }
 
     @Override
@@ -381,8 +386,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             currentPosition.append("[城市]").append(location.getCity()).append("\n");
             currentPosition.append("[区县]").append(location.getDistrict()).append("\n");
             currentPosition.append("[街道]").append(location.getStreet());
-            Toast.makeText(MainActivity.this,location.getCity(),Toast.LENGTH_LONG).show();
-            Log.d("test",currentPosition+"");
+            //Log.d("test",currentPosition+"");
         }
     }
     protected void onRefresh(){
@@ -442,7 +446,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mLocationClient.stop();
     }
 
-    private void JudgePermission(){
+    private void JudgePermission(){     //权限判断
         List<String> permissionList = new ArrayList<>();// Permission array list , request permissions in one array.
         if(ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=  PackageManager.PERMISSION_GRANTED){
             permissionList.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
@@ -458,6 +462,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
             ActivityCompat.requestPermissions(MainActivity.this,permissions,1);//request all permissions
         }else {
             requestLocation();// Request Location information
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_PORTRAIT) {             //切换为竖屏
+            setContentView(R.layout.weather_info_port);
+            init();
+        }else if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {      //切换为横屏
+            setContentView(R.layout.weather_info_land);
+            init();
         }
     }
 }
