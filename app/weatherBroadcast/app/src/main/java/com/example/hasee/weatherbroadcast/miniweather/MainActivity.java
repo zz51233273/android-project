@@ -1,6 +1,8 @@
 package com.example.hasee.weatherbroadcast.miniweather;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -38,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.hasee.weatherbroadcast.bls.MyLocation;
-import com.example.hasee.weatherbroadcast.database.DBHelper;
+import android.text.ClipboardManager;
 import com.example.hasee.weatherbroadcast.database.DBManager;
 import com.example.hasee.weatherbroadcast.util.NetUtil;
 
@@ -141,6 +143,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         else if(view.getId()==R.id.title_location){
             onRefresh();
+        }
+        else if(view.getId()==R.id.title_share){
+            /*copyWeatherMessage();*/
         }
     }
 
@@ -444,4 +449,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
             init();
         }
     }
+
+/*    private void copyWeatherMessage(){
+        if(null!=cityTv||!"".equals(cityTv)){
+            StringBuffer s=new StringBuffer();
+            s.append(cityTv.getText()+"\n").append(humidityTv.getText()+"\n").append(pmDataTv.getText()+"\n").append(temperatureTv.getText()+"\n").append(climateTv.getText()+"\n");
+            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        }
+    }*/
 }
