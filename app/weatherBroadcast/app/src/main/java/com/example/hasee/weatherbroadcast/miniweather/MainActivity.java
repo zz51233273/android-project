@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private String code="";
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
+            switch (msg.what){
                 case UPDATE_TODAY_WEATHER:
                     updateTodayWeather((TodayWeather) msg.obj);
                     break;
@@ -112,7 +112,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         climateTv = (TextView) findViewById(R.id.climate);
         windTv = (TextView) findViewById(R.id.wind);
         weatherImg = (ImageView) findViewById(R.id.weather_img);
-
+        pmImg=(ImageView)findViewById(R.id.pm2_5_img);
         city_name_Tv.setText("");
         cityTv.setText("");
         timeTv.setText("");
@@ -293,6 +293,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
     void chooseWeatherImg(TodayWeather todayWeather){
         String updatetime=todayWeather.getUpdatetime();
+        int pm=0;
+        if(null!=todayWeather.getPm25())
+            pm=Integer.parseInt(todayWeather.getPm25());
         updatetime=updatetime.substring(0,updatetime.indexOf(":"));
         int nowTime=Integer.parseInt(updatetime);
         if(nowTime>=6&&nowTime<19){
@@ -319,6 +322,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     weatherImg.setImageResource(R.drawable.cloudy_night);
                 default:
             }
+        }
+        if(pm<=50){
+            pmImg.setImageResource(R.drawable.biz_plugin_weather_0_50);
+        }else if(pm<=100){
+            pmImg.setImageResource(R.drawable.biz_plugin_weather_51_100);
+        }else if(pm<=150){
+            pmImg.setImageResource(R.drawable.biz_plugin_weather_101_150);
+        }else if(pm<=200){
+            pmImg.setImageResource(R.drawable.biz_plugin_weather_151_200);
+        }else if(pm<=300){
+            pmImg.setImageResource(R.drawable.biz_plugin_weather_201_300);
+        }else{
+            pmImg.setImageResource(R.drawable.biz_plugin_weather_greater_300);
         }
     }
     void updateWeatherData(){

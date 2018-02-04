@@ -28,7 +28,6 @@ public class MyLocation implements BDLocationListener {
     @Override
     public  void onReceiveLocation(BDLocation location) {
         final StringBuilder currentPosition = new StringBuilder();
-        Log.d("test", location.getLocType() + "");
         if (location.getLocType() == BDLocation.TypeGpsLocation) {   // GPS定位结果
             currentPosition.append("\nGPS定位成功");
             currentPosition.append("\n");
