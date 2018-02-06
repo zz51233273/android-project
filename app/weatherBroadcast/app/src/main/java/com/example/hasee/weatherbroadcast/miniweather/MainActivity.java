@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent i = new Intent(this, SelectCity.class);
             i.putExtra("keycode",code);
             startActivity(i);
-
         }
         else if (view.getId() == R.id.title_update_btn) {        //点击更新按钮
             updateWeatherData();
