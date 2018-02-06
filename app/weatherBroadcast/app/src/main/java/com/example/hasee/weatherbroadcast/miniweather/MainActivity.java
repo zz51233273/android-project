@@ -4,15 +4,15 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +24,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
 import com.example.hasee.weatherbroadcast.R;
+import com.example.hasee.weatherbroadcast.adapter.MyFragmentPagerAdapter;
 import com.example.hasee.weatherbroadcast.bean.TodayWeather;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -46,7 +47,7 @@ import com.example.hasee.weatherbroadcast.database.DBManager;
 import com.example.hasee.weatherbroadcast.util.NetUtil;
 
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int UPDATE_TODAY_WEATHER = 1;
     private BDLocationListener BaiDuListener = new MyLocation(this);
@@ -59,6 +60,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv,
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
+
+    private FragmentPager fragmentPager;
+    private ViewPager vpager;
 
     private String code="";
     private Handler mHandler = new Handler() {
@@ -79,6 +83,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info_port);
+        vpager = (ViewPager) findViewById(R.id.vpager);
+        fragmentPager=new FragmentPager(getSupportFragmentManager(),vpager);
         new DBManager(getApplicationContext()).writeData();
         init();
     }
@@ -387,7 +393,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    public  void  onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults){
+    public  void  onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults){     //检查权限
         switch (requestCode){
             case 1:
                 if(grantResults.length >0 ){
@@ -423,7 +429,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mLocationClient.stop();
     }
 
-    private void JudgePermission(){     //权限判断
+    private void JudgePermission(){     //检查权限
         List<String> permissionList = new ArrayList<>();// Permission array list , request permissions in one array.
         if(ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=  PackageManager.PERMISSION_GRANTED){
             permissionList.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
@@ -439,18 +445,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             ActivityCompat.requestPermissions(MainActivity.this,permissions,1);//request all permissions
         }else {
             requestLocation();// Request Location information
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig){
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_PORTRAIT) {             //切换为竖屏
-            setContentView(R.layout.weather_info_port);
-            init();
-        }else if (newConfig.orientation == this.getResources().getConfiguration().ORIENTATION_LANDSCAPE) {      //切换为横屏
-            setContentView(R.layout.weather_info_land);
-            init();
         }
     }
 

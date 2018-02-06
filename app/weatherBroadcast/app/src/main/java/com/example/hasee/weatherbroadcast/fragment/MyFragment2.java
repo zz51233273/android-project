@@ -1,4 +1,4 @@
-package com.example.hasee.fragmentpageadapter;
+package com.example.hasee.weatherbroadcast.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.hasee.weatherbroadcast.R;
+
 
 public class MyFragment2 extends Fragment {
 
@@ -16,9 +18,7 @@ public class MyFragment2 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fg_content,container,false);
-        TextView txt_content = (TextView) view.findViewById(R.id.txt_content);
-        txt_content.setText("第二个Fragment");
+        View view = inflater.inflate(R.layout.weather_info_port, container, false);
 
         return view;
     }
