@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hasee.animationtest.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/scaleX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="缩放X" />
+        <Button
+            android:id="@+id/scaleY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="缩放Y" />
+        <Button
+            android:id="@+id/translationX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="移动X" />
+        <Button
+            android:id="@+id/translationY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="移动Y" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/liner_layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear_layout">
+        <Button
+            android:id="@+id/rotationX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="旋转X" />
+        <Button
+            android:id="@+id/rotationY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="旋转Y" />
+        <Button
+            android:id="@+id/rotationZ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="旋转Z" />
+        <Button
+            android:id="@+id/alpha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="透明度" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/liner_layout2"
+        android:text="组合动画" />
+
+
+
+
+    <ImageView
+        android:id="@+id/iamgeview"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/cshbu" />
+</RelativeLayout>
