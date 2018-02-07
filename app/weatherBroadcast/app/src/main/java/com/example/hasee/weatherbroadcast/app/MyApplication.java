@@ -30,6 +30,13 @@ public class MyApplication {
                     break;
                 case "多云":
                     i.setImageResource(R.drawable.cloudy);
+                    break;
+                case "小雨":
+                    i.setImageResource(R.drawable.small_rain);
+                    break;
+                case  "阴":
+                    i.setImageResource(R.drawable.multycloudy);
+                    break;
                 default:
             }
         }else{
@@ -42,6 +49,13 @@ public class MyApplication {
                     break;
                 case "多云":
                     i.setImageResource(R.drawable.cloudy_night);
+                    break;
+                case "小雨":
+                    i.setImageResource(R.drawable.small_rain);
+                    break;
+                case  "阴":
+                    i.setImageResource(R.drawable.multycloudy);
+                    break;
                 default:
             }
         }
