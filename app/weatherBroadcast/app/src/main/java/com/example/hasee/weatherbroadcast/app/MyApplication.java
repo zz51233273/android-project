@@ -17,8 +17,11 @@ public class MyApplication {
     public static ForecastWeather forecastWeather2=null; //后天
     public static TodayWeather todayWeather = null;
 
-    public static void changeImg(String updatetime,String type,View view,int pos){
+    public static void changeImg(String type,View view,int pos){
         ImageView i=(ImageView) view.findViewById(R.id.weather_img);
+        String updatetime="";
+        updatetime=MyApplication.todayWeather.getUpdatetime();
+        updatetime=updatetime.substring(0,updatetime.indexOf(":"));
         int nowTime=Integer.parseInt(updatetime);
         if(nowTime>=6&&nowTime<19){
             if(nowTime==18) view.findViewById(R.id.weather_today).setBackgroundResource(R.drawable.main_dusk);
@@ -63,7 +66,6 @@ public class MyApplication {
                     i.setImageResource(R.drawable.multycloudy);
                     break;
                 case "阵雨":
-                    view.findViewById(R.id.weather_today).setBackgroundResource(R.drawable.main_night);
                     i.setImageResource(R.drawable.shower);
                     break;
                 default:
