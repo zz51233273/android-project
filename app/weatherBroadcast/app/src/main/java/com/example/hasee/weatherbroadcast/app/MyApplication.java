@@ -45,6 +45,9 @@ public class MyApplication {
                 case "阵雨":
                     i.setImageResource(R.drawable.shower);
                     break;
+                case "雨夹雪":
+                    i.setImageResource(R.drawable.rain_with_snow);
+                    break;
                 default:
             }
         }else{
@@ -67,6 +70,9 @@ public class MyApplication {
                     break;
                 case "阵雨":
                     i.setImageResource(R.drawable.shower);
+                    break;
+                case "雨夹雪":
+                    i.setImageResource(R.drawable.rain_with_snow);
                     break;
                 default:
             }
