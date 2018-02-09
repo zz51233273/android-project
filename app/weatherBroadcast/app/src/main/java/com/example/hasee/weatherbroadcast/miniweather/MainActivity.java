@@ -83,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     };
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateWeatherData();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         climateTv.setText("");
         windTv.setText("");
         weatherImg.setImageResource(R.drawable.na);
-        updateWeatherData();
+
     }
 
     @Override
@@ -364,16 +369,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void updateTodayWeather(TodayWeather todayWeather){         //更新当前天气信息,在Handler中被调用
-        city_name_Tv.setText(todayWeather.getCity()+"天气");
-        cityTv.setText(todayWeather.getCity());
-        timeTv.setText(todayWeather.getUpdatetime()+ "发布");
-        humidityTv.setText("湿度："+todayWeather.getShidu());
-        pmDataTv.setText(todayWeather.getPm25());
-        pmQualityTv.setText(todayWeather.getQuality());
-        weekTv.setText(todayWeather.getDate());
-        temperatureTv.setText(todayWeather.getLow()+" ~ "+todayWeather.getHigh());
-        climateTv.setText(todayWeather.getType());
-        windTv.setText("风力:"+todayWeather.getFengli());
         chooseWeatherImg(todayWeather);
         fragmentPager=new FragmentPager(getSupportFragmentManager(),vpager);
     }

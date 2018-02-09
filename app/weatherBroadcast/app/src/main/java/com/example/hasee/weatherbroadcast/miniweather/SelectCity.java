@@ -201,8 +201,8 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
         addCitysAndCodes(cursor);
         adapter2.notifyDataSetChanged();                       //通知spinner刷新数据 ***** 很必要
         if(!flag&&!"".equals(getIntent().getStringExtra("keycode"))){       //设置城市默认值，此页面中只执行一次
-            adapter2.notifyDataSetChanged();                       //通知spinner刷新数据 ***** 很必要
-            int pos=adapter2.getPosition(city);      //得到defCity这个城市在下拉框中的位置
+            adapter2.notifyDataSetChanged();                   //通知spinner刷新数据 ***** 很必要
+            int pos=adapter2.getPosition(city);      //得到city这个城市在下拉框中的位置
             spinner2.setSelection(pos);               //设置spinner2下拉框默认值
             flag=true;
         }
