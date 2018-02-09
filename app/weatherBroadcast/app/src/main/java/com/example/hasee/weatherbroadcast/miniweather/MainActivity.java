@@ -52,7 +52,6 @@ import com.example.hasee.weatherbroadcast.util.NetUtil;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int UPDATE_TODAY_WEATHER = 1;
-    private static final int UPDATE_TOMORROW_WEATHER = 2;
     private BDLocationListener BaiDuListener = new MyLocation(this);
     private LocationClient mLocationClient = null;
     private LocationClientOption option = new LocationClientOption();
@@ -74,13 +73,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case UPDATE_TODAY_WEATHER:
                     updateTodayWeather((TodayWeather) msg.obj);
                     break;
-                case UPDATE_TOMORROW_WEATHER:
-                    break;
                 default:
                     break;
             }
         }
-
     };
 
     @Override
