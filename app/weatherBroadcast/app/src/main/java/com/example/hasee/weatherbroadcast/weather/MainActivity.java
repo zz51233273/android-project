@@ -1,30 +1,39 @@
-package com.example.hasee.weatherbroadcast.miniweather;
+package com.example.hasee.weatherbroadcast.weather;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
 import com.example.hasee.weatherbroadcast.R;
-import com.example.hasee.weatherbroadcast.adapter.MyFragmentPagerAdapter;
 import com.example.hasee.weatherbroadcast.app.MyApplication;
 import com.example.hasee.weatherbroadcast.bean.ForecastWeather;
 import com.example.hasee.weatherbroadcast.bean.TodayWeather;
@@ -42,31 +51,26 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.hasee.weatherbroadcast.bls.MyLocation;
 import android.content.ClipboardManager;
+
+import com.example.hasee.weatherbroadcast.database.City;
+import com.example.hasee.weatherbroadcast.database.DBHelper;
 import com.example.hasee.weatherbroadcast.database.DBManager;
 import com.example.hasee.weatherbroadcast.util.NetUtil;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int UPDATE_TODAY_WEATHER = 1;
     private BDLocationListener BaiDuListener = new MyLocation(this);
     private LocationClient mLocationClient = null;
     private LocationClientOption option = new LocationClientOption();
-    private ImageView mUpdateBtn;
-    private ImageView lbs_btn;
-    private ImageView share_btn;
-    private ImageView mCitySelect;
-    private TextView city_name_Tv;
     private FragmentPager fragmentPager;
     private ViewPager vpager;
     private ImageView weatherImg, pmImg;
-    private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv,
-            temperatureTv, climateTv, windTv;
-
+    private TextView titleCityName;
     private String code="";
+    private boolean isStart=false;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what){
@@ -82,7 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        updateWeatherData();
+        if(isStart)
+            updateWeatherData();
+        else isStart=true;
     }
 
     @Override
@@ -94,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new DBManager(getApplicationContext()).writeData();
     }
     void init(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initNavigationDrawer();
+            }
+        }).start();
         //判断网络状态
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d("myWeather", "网络OK");
@@ -104,64 +116,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         initView();
         JudgePermission();
-
     }
 
     void initView(){        //初始化对象
         mLocationClient = new LocationClient(getApplicationContext());//声明LocationClient类
         mLocationClient.registerLocationListener(BaiDuListener);    //注册监听函数
-        mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
-        mUpdateBtn.setOnClickListener(this);
-        share_btn=(ImageView)findViewById(R.id.title_share);
-        share_btn.setOnClickListener(this);
-        lbs_btn=(ImageView)findViewById(R.id.title_location);
-        lbs_btn.setOnClickListener(this);
-        mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
-        mCitySelect.setOnClickListener(this);
-        city_name_Tv = (TextView) findViewById(R.id.title_city_name);
-        cityTv = (TextView) findViewById(R.id.city);
-        timeTv = (TextView) findViewById(R.id.time);
-        humidityTv = (TextView) findViewById(R.id.humidity);
-        weekTv = (TextView) findViewById(R.id.week_today);
-        pmDataTv = (TextView) findViewById(R.id.pm_data);
-        pmQualityTv = (TextView) findViewById(R.id.pm2_5_quality);
-        pmImg = (ImageView) findViewById(R.id.pm2_5_img);
-        temperatureTv = (TextView) findViewById(R.id.temperature);
-        climateTv = (TextView) findViewById(R.id.climate);
-        windTv = (TextView) findViewById(R.id.wind);
+        titleCityName=(TextView)findViewById(R.id.title_city_name);
         weatherImg = (ImageView) findViewById(R.id.weather_img);
-        pmImg=(ImageView)findViewById(R.id.pm2_5_img);
-        city_name_Tv.setText("");
-        cityTv.setText("");
-        timeTv.setText("");
-        humidityTv.setText("");
-        pmDataTv.setText("");
-        pmQualityTv.setText("");
-        weekTv.setText("");
-        temperatureTv.setText("");
-        climateTv.setText("");
-        windTv.setText("");
         weatherImg.setImageResource(R.drawable.na);
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        if(view.getId() == R.id.title_city_manager){        //点击切换城市按钮
-            Intent i = new Intent(this, SelectCity.class);
-            i.putExtra("keycode",code);
-            startActivity(i);
-        }
-        else if (view.getId() == R.id.title_update_btn) {        //点击更新按钮
-            updateWeatherData();
-        }
-        else if(view.getId()==R.id.title_location){
-            onRefresh();
-        }
-        else if(view.getId()==R.id.title_share){
-            copyWeatherMessage();
-        }
+        pmImg=(ImageView)findViewById(R.id.pm2_5_img);
     }
 
     private void queryWeatherCode(String cityCode) {
@@ -370,11 +333,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void chooseWeatherImg(TodayWeather weather){            //根据当前天气信息，更改天气图片
+        titleCityName.setText(weather.getCity()+"天气");
         int pm=0;
-        String updatetime="";
         if(null!=weather){
-            updatetime=weather.getUpdatetime();
-            updatetime=updatetime.substring(0,updatetime.indexOf(":"));
             if(null!=weather.getPm25())
                 pm=Integer.parseInt(weather.getPm25());
             if(pm<=50){
@@ -391,14 +352,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 pmImg.setImageResource(R.drawable.biz_plugin_weather_greater_300);
             }
             MyApplication.todayWeather.setPmImg(pmImg);
-            changeImg(updatetime,weather.getType());
+            String updatetime;
+            updatetime=MyApplication.todayWeather.getUpdatetime();
+            updatetime=updatetime.substring(0,updatetime.indexOf(":"));
+            changeImg(updatetime,MyApplication.todayWeather.getType());
         }
     }
     public void changeImg(String updatetime,String type){
         int nowTime=Integer.parseInt(updatetime);
         if(nowTime>=6&&nowTime<19){         //代表早上时间
-            if(nowTime==18) findViewById(R.id.title).setBackgroundResource(R.drawable.main_dusk);
-            else findViewById(R.id.title).setBackgroundResource(R.drawable.main_sun);
+            if(nowTime==18) findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_night);
+            else findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_sun);
             switch(type){
                 case "多云转晴":
                     weatherImg.setImageResource(R.drawable.cloudy_with_rain);
@@ -411,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 default:
             }
         }else{
-            findViewById(R.id.title).setBackgroundResource(R.drawable.main_night);
+            findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_night);
             switch(type){                   //代表晚上时间
                 case "多云转晴":
                     weatherImg.setImageResource(R.drawable.cloudy_with_rain_night);
@@ -427,14 +391,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyApplication.todayWeather.setWeatherImg(weatherImg);
     }
     void updateWeatherData(){
-        //SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+
         if(null!=SelectCity.spinner2){
             int pos=SelectCity.spinner2.getSelectedItemPosition();
             code=SelectCity.codes.get(pos);
-        }else if(!"".equals(MyLocation.cityCode)){
-            code=MyLocation.cityCode;
-        }
-        else{
+        } else if("".equals(code)){
             code="101010100";
         }
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
@@ -515,12 +476,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void copyWeatherMessage(){              //把当前天气信息复制到黏贴板上
-        if(null!= cityTv||!"".equals(cityTv.getText())){
+        if(null!= MyApplication.todayWeather){
             StringBuffer mes=new StringBuffer();
-            mes.append(cityTv.getText()+"\n").append(humidityTv.getText()+"\n")
-                    .append("pm2.5指数："+pmDataTv.getText()+"\n")
-                    .append("气温："+temperatureTv.getText()+"\n")
-                    .append(climateTv.getText());
+            mes.append(MyApplication.todayWeather.getCity()+"\n");
+
+            if(!"".equals(MyApplication.todayWeather.getPm25())&&null!=MyApplication.todayWeather.getPm25())
+                mes.append("pm2.5指数："+MyApplication.todayWeather.getPm25()+"\n");
+
+            mes.append("气温："+MyApplication.todayWeather.getLow()+" ~ "+MyApplication.todayWeather.getHigh()+"\n");
+            mes.append(MyApplication.todayWeather.getType()+"\n");
+
+            if(!"".equals(MyApplication.todayWeather.getIndex_cloth())&&null!=MyApplication.todayWeather.getIndex_cloth())
+                mes.append("穿衣指数:"+"\n"+MyApplication.todayWeather.getIndex_cloth()+"\n");
+
+            if(!"".equals(MyApplication.todayWeather.getIndex_date())&&null!=MyApplication.todayWeather.getIndex_date())
+                mes.append("约会指数:"+"\n"+MyApplication.todayWeather.getIndex_date()+"\n");
+
             ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData mClipData = ClipData.newPlainText("Label", mes);
             cm.setPrimaryClip(mClipData);
@@ -529,4 +500,154 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this,"当前无天气信息",Toast.LENGTH_LONG).show();
         }
     }
+
+    private void initNavigationDrawer(){        //初始化左菜单栏
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(onMenuItemClick);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void getDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        StringBuffer message=new StringBuffer();
+        message.append("此app为摩洱天气预报\n")
+                .append("制作人 : zz51233273\n")
+                .append("图片来源 : 互联网 & 自创\n");
+        builder.setMessage(message);
+        builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.create().show();
+    }
+
+    /*
+    * 菜单栏 + DrawerLayout+NavigationView布局
+    * */
+    private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.base_action_city:
+                    onRefresh();
+                    break;
+                case R.id.action_share:
+                    copyWeatherMessage();
+                    break;
+                case R.id.action_update:
+                    updateWeatherData();
+                    break;
+            }
+            return true;
+        }
+    };
+
+    @Override
+    public void onBackPressed()
+    {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        switch (id){
+            case R.id.nav_city:
+                Intent i = new Intent(this, SelectCity.class);
+                i.putExtra("keycode",code);
+                startActivity(i);
+                break;
+            case R.id.nav_about:
+                getDialog();
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 為了讓 Toolbar 的 Menu 有作用，這邊的程式不可以拿掉
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    class MyLocation implements BDLocationListener {        //定位监听类
+        private DBHelper dbHelper;            //用于创建帮助器对象（处理数据库相关操作）
+        private SQLiteDatabase database;     //用于创建数据库对象
+        private Context context;
+        public MyLocation(Context context){
+            this.context=context;
+        }
+        @Override
+        public  void onReceiveLocation(BDLocation location) {
+            final StringBuilder currentPosition = new StringBuilder();
+            if (location.getLocType() == BDLocation.TypeGpsLocation) {   // GPS定位结果
+                currentPosition.append("\nGPS定位成功");
+            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {  // Net定位结果
+                currentPosition.append(location.getAddrStr());    //获取地址信息
+                currentPosition.append("\n[运营商]");
+                currentPosition.append(location.getOperators());    //获取运营商信息
+                currentPosition.append("\n网络定位成功！");
+            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {                // 离线定位结果
+                currentPosition.append("离线定位成功，离线定位结果也是有效的\n");
+            } else if (location.getLocType() == BDLocation.TypeServerError) {
+                currentPosition.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因\n");
+            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+                currentPosition.append("网络不同导致定位失败，请检查网络是否通畅\n");
+            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+                currentPosition.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机\n");
+            } else {
+                currentPosition.append("定位失败。错误码：\n");
+            }
+
+            if (null != location) {
+                dbHelper = new DBHelper(context, "city.db", null, 3);
+                database = dbHelper.getWritableDatabase();
+                code = SelectCityCode(location.getProvince(), location.getCity());      //得到定位到的城市的城市代码
+                database.close();
+                updateWeatherData();
+            }
+        }
+        public String SelectCityCode(String province,String city){   //得到相应城市代码
+            province=province.substring(0,province.length()-1);
+            city=city.substring(0,city.length()-1);
+            Cursor cursor=dbHelper.QueryCodeByProAndCity(database,province,city);
+            String code="";
+            if(cursor.moveToFirst()){
+                code=cursor.getString(cursor.getColumnIndex(City.KEY_CODE));
+            }
+            return code;
+        }
+    }
 }
+

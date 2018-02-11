@@ -2,6 +2,8 @@ package com.example.hasee.weatherbroadcast.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,18 +26,35 @@ import java.util.List;
 
 public class MyFragment3 extends Fragment{
 
+    private static final int UPDATE_WEATHER_IMG = 1;
     private List<ForecastWeatherItem> forecastItemList = new ArrayList<ForecastWeatherItem>();
+    private View view;
     public MyFragment3() {
     }
 
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what){
+                case UPDATE_WEATHER_IMG :
+                    initForecastItem();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.weather_broadcast_list, container, false);
+        view = inflater.inflate(R.layout.weather_broadcast_list, container, false);
         forecastItemList.clear();
-        initForecastItem();
-        WeatherForecastAdapter weatherForecastAdapter=new WeatherForecastAdapter(getContext(),R.layout.weatherforcast_item,forecastItemList);
-        ListView listView=(ListView)view.findViewById(R.id.wListView);
-        listView.setAdapter(weatherForecastAdapter);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message msg=new Message();
+                msg.what=UPDATE_WEATHER_IMG;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
         return view;
     }
 
@@ -45,13 +64,17 @@ public class MyFragment3 extends Fragment{
         for (int i=0;i<pos;i++){
             changeImg(MyApplication.forecastWeather[i]);
             forecastWeatherItem=new ForecastWeatherItem(MyApplication.forecastWeather[i].getDate(),
-                    MyApplication.forecastWeather[i].getLow()+" ~ "+MyApplication.forecastWeather[i].getHigh()
+            MyApplication.forecastWeather[i].getLow()+" ~ "+MyApplication.forecastWeather[i].getHigh()
                     , MyApplication.forecastWeather[i].getType()
                     , MyApplication.forecastWeather[i].getWeatherImg());
             forecastItemList.add(forecastWeatherItem);
         }
+        WeatherForecastAdapter weatherForecastAdapter=new WeatherForecastAdapter(getContext(),R.layout.weatherforcast_item,forecastItemList);
+        ListView listView=(ListView)view.findViewById(R.id.wListView);
+        listView.setAdapter(weatherForecastAdapter);
     }
-    public void changeImg(ForecastWeather forecastWeather){
+
+    private void changeImg(ForecastWeather forecastWeather){
         String updatetime="";
         updatetime=MyApplication.todayWeather.getUpdatetime();
         updatetime=updatetime.substring(0,updatetime.indexOf(":"));

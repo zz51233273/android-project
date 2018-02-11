@@ -1,6 +1,5 @@
 package com.example.hasee.weatherbroadcast.app;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,7 +15,8 @@ public class MyApplication {
     public static ForecastWeather forecastWeather[];        //未来四天的天气
     public static TodayWeather todayWeather = null;
 
-    public static void changeImg(String type,View view,int pos){
+    public static void changeImg(View view){
+        String type=todayWeather.getType();
         ImageView i=(ImageView) view.findViewById(R.id.weather_img);
         String updatetime="";
         updatetime=MyApplication.todayWeather.getUpdatetime();

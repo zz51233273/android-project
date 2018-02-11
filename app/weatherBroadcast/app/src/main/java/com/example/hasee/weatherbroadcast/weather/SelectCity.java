@@ -1,44 +1,32 @@
-package com.example.hasee.weatherbroadcast.miniweather;
+package com.example.hasee.weatherbroadcast.weather;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.baidu.speech.asr.SpeechConstant;
 import com.example.hasee.weatherbroadcast.R;
-import com.example.hasee.weatherbroadcast.app.MyApplication;
-import com.example.hasee.weatherbroadcast.bean.TodayWeather;
 import com.example.hasee.weatherbroadcast.database.City;
 import com.example.hasee.weatherbroadcast.database.DBHelper;
 import com.example.hasee.weatherbroadcast.speechrecognizer.MyEventListener;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Created by hasee on 2018/1/27.
