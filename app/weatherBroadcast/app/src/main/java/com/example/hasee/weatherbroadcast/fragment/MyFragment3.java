@@ -94,6 +94,9 @@ public class MyFragment3 extends Fragment{
                 case "小雨":
                     forecastWeather.setWeatherImg(R.drawable.small_rain);
                     break;
+                case "中雨":
+                    forecastWeather.setWeatherImg(R.drawable.middle_rain);
+                    break;
                 case  "阴":
                     forecastWeather.setWeatherImg(R.drawable.multycloudy);
                     break;
@@ -118,6 +121,9 @@ public class MyFragment3 extends Fragment{
                     break;
                 case "小雨":
                     forecastWeather.setWeatherImg(R.drawable.small_rain);
+                    break;
+                case "中雨":
+                    forecastWeather.setWeatherImg(R.drawable.middle_rain);
                     break;
                 case "阴":
                     forecastWeather.setWeatherImg(R.drawable.multycloudy);

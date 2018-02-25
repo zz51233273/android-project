@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.baidu.speech.asr.SpeechConstant;
 import com.example.hasee.weatherbroadcast.R;
+import com.example.hasee.weatherbroadcast.app.MyApplication;
 import com.example.hasee.weatherbroadcast.database.City;
 import com.example.hasee.weatherbroadcast.database.DBHelper;
 import com.example.hasee.weatherbroadcast.speechrecognizer.MyEventListener;
@@ -40,7 +41,7 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
     private ArrayAdapter<String> adapter2;
     private Spinner spinner1;
     protected static Spinner spinner2;
-    private static List<String> provinces;
+    private List<String> provinces;
     private List<String> citys;
     protected static List<String> codes;
     private TextView testview;
@@ -56,6 +57,7 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_city);
+        MyApplication.isSelecting=true;
         speak=(Button)findViewById(R.id.speak);
         speak.setOnClickListener(this);
         speak.setOnTouchListener(this);
@@ -136,7 +138,7 @@ public class SelectCity extends Activity implements AdapterView.OnItemSelectedLi
                         Cursor cursor=null;
                         database=dbHelper.getWritableDatabase();        //通过数据库查找结果
                         String city="";
-                        while((null==cursor||!cursor.moveToFirst())&&myEventListener.isListening){  //仍为搜索到并且正在监听
+                        while((null==cursor||!cursor.moveToFirst())&&myEventListener.isListening){  //仍未搜索到并且正在监听
                             if(null!=cursor)cursor.close();
                             city=myEventListener.getCitySpeaked();
                             if(""!=city){

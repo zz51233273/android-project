@@ -30,7 +30,7 @@
                 android:paddingLeft="5dip"
                 android:text="北京天气"
                 android:textColor="#ffffffff"
-                android:textSize="22.0sp" />
+                android:textSize="20sp" />
 
         </android.support.v7.widget.Toolbar>
 

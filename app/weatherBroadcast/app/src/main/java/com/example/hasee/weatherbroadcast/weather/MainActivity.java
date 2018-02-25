@@ -23,7 +23,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,9 +85,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        if(isStart)
+        if(MyApplication.isAdding){
+            updateMyCityWeatherData();
+            MyApplication.isAdding=false;
+        }
+        else if(MyApplication.isSelecting){
             updateWeatherData();
-        else isStart=true;
+            MyApplication.isSelecting=false;
+        }
     }
 
     @Override
@@ -361,37 +365,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void changeImg(String updatetime,String type){
         int nowTime=Integer.parseInt(updatetime);
         if(nowTime>=6&&nowTime<19){         //代表早上时间
-            if(nowTime==18) findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_night);
-            else findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_sun);
-            switch(type){
-                case "多云转晴":
-                    weatherImg.setImageResource(R.drawable.cloudy_with_rain);
-                    break;
-                case "晴":
-                    weatherImg.setImageResource(R.drawable.sun);
-                    break;
-                case "多云":
-                    weatherImg.setImageResource(R.drawable.cloudy);
-                default:
+            if(nowTime==18) {
+                findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_night);
+            }
+            else {
+                findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_sun);
             }
         }else{
             findViewById(R.id.toolbar).setBackgroundResource(R.drawable.title_night);
-            switch(type){                   //代表晚上时间
-                case "多云转晴":
-                    weatherImg.setImageResource(R.drawable.cloudy_with_rain_night);
-                    break;
-                case "晴":
-                    weatherImg.setImageResource(R.drawable.sun_night);
-                    break;
-                case "多云":
-                    weatherImg.setImageResource(R.drawable.cloudy_night);
-                default:
-            }
         }
         MyApplication.todayWeather.setWeatherImg(weatherImg);
     }
-    void updateWeatherData(){
 
+    void updateWeatherData(){
         if(null!=SelectCity.spinner2){
             int pos=SelectCity.spinner2.getSelectedItemPosition();
             code=SelectCity.codes.get(pos);
@@ -404,6 +390,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             Log.d("myWeather", "网络挂了");
             Toast.makeText(MainActivity.this, "网络挂了！", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    void updateMyCityWeatherData(){
+        if(!"".equals(MyCitys.myCode)){
+            code=MyCitys.myCode;
+            if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
+                Log.d("myWeather", "网络OK");
+                queryWeatherCode(code);
+            } else {
+                Log.d("myWeather", "网络挂了");
+                Toast.makeText(MainActivity.this, "网络挂了！", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            updateWeatherData();
         }
     }
 
@@ -475,6 +476,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    protected static void addCity(String city){
+
+    }
     private void copyWeatherMessage(){              //把当前天气信息复制到黏贴板上
         if(null!= MyApplication.todayWeather){
             StringBuffer mes=new StringBuffer();
@@ -588,6 +592,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_about:
                 getDialog();
+                break;
+            case R.id.nav_add:
+                Intent i2 = new Intent(this, MyCitys.class);
+                i2.putExtra("keycode",code);
+                startActivity(i2);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
