@@ -75,67 +75,39 @@ public class MyFragment3 extends Fragment{
     }
 
     private void changeImg(ForecastWeather forecastWeather){
-        String updatetime="";
-        updatetime=MyApplication.todayWeather.getUpdatetime();
-        updatetime=updatetime.substring(0,updatetime.indexOf(":"));
-        int nowTime=Integer.parseInt(updatetime);
         String type=forecastWeather.getType();
-        if(nowTime>=6&&nowTime<19){
-            switch(type){
-                case "多云转晴":
-                    forecastWeather.setWeatherImg(R.drawable.cloudy_with_rain);
-                    break;
-                case "晴":
-                    forecastWeather.setWeatherImg(R.drawable.sun);
-                    break;
-                case "多云":
-                    forecastWeather.setWeatherImg(R.drawable.cloudy);
-                    break;
-                case "小雨":
-                    forecastWeather.setWeatherImg(R.drawable.small_rain);
-                    break;
-                case "中雨":
-                    forecastWeather.setWeatherImg(R.drawable.middle_rain);
-                    break;
-                case  "阴":
-                    forecastWeather.setWeatherImg(R.drawable.multycloudy);
-                    break;
-                case "阵雨":
-                    forecastWeather.setWeatherImg(R.drawable.shower);
-                    break;
-                case "雨夹雪":
-                    forecastWeather.setWeatherImg(R.drawable.rain_with_snow);
-                    break;
-                default:
-            }
-        }else{
-            switch(type){
-                case "多云转晴":
-                    forecastWeather.setWeatherImg(R.drawable.cloudy_with_rain_night);
-                    break;
-                case "晴":
-                    forecastWeather.setWeatherImg(R.drawable.sun_night);
-                    break;
-                case "多云":
-                    forecastWeather.setWeatherImg(R.drawable.cloudy_night);
-                    break;
-                case "小雨":
-                    forecastWeather.setWeatherImg(R.drawable.small_rain);
-                    break;
-                case "中雨":
-                    forecastWeather.setWeatherImg(R.drawable.middle_rain);
-                    break;
-                case "阴":
-                    forecastWeather.setWeatherImg(R.drawable.multycloudy);
-                    break;
-                case "阵雨":
-                    forecastWeather.setWeatherImg(R.drawable.shower);
-                    break;
-                case "雨夹雪":
-                    forecastWeather.setWeatherImg(R.drawable.rain_with_snow);
-                    break;
-                default:
-            }
+        switch(type){           //根据天气情况改变图片
+            case "多云转晴":
+                forecastWeather.setWeatherImg(R.drawable.cloudy_with_rain);
+                break;
+            case "晴":
+                forecastWeather.setWeatherImg(R.drawable.sun);
+                break;
+            case "多云":
+                forecastWeather.setWeatherImg(R.drawable.cloudy);
+                break;
+            case "小雨":
+                forecastWeather.setWeatherImg(R.drawable.small_rain);
+                break;
+            case "中雨":
+                forecastWeather.setWeatherImg(R.drawable.middle_rain);
+                break;
+            case  "阴":
+                forecastWeather.setWeatherImg(R.drawable.multycloudy);
+                break;
+            case "阵雨":
+                forecastWeather.setWeatherImg(R.drawable.shower);
+                break;
+            case "雨夹雪":
+                forecastWeather.setWeatherImg(R.drawable.rain_with_snow);
+                break;
+            case "大雪":
+                forecastWeather.setWeatherImg(R.drawable.big_snow);
+                break;
+            case "阵雪":
+                forecastWeather.setWeatherImg(R.drawable.multy_snow);
+                break;
+            default:
         }
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LocationClientOption option = new LocationClientOption();
     private FragmentPager fragmentPager;
     private ViewPager vpager;
-    private ImageView weatherImg, pmImg;
+    private ImageView weatherImg;
     private TextView titleCityName;
     private String code="";
     private boolean isStart=false;
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         titleCityName=(TextView)findViewById(R.id.title_city_name);
         weatherImg = (ImageView) findViewById(R.id.weather_img);
         weatherImg.setImageResource(R.drawable.na);
-        pmImg=(ImageView)findViewById(R.id.pm2_5_img);
     }
 
     private void queryWeatherCode(String cityCode) {
@@ -338,25 +338,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     void chooseWeatherImg(TodayWeather weather){            //根据当前天气信息，更改天气图片
         titleCityName.setText(weather.getCity()+"天气");
-        int pm=0;
         if(null!=weather){
-            if(null!=weather.getPm25())
-                pm=Integer.parseInt(weather.getPm25());
-            if(pm<=50){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_0_50);
-            }else if(pm<=100){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_51_100);
-            }else if(pm<=150){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_101_150);
-            }else if(pm<=200){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_151_200);
-            }else if(pm<=300){
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_201_300);
-            }else{
-                pmImg.setImageResource(R.drawable.biz_plugin_weather_greater_300);
-            }
-            MyApplication.todayWeather.setPmImg(pmImg);
-            String updatetime;
+            String updatetime;      //当前时间
             updatetime=MyApplication.todayWeather.getUpdatetime();
             updatetime=updatetime.substring(0,updatetime.indexOf(":"));
             changeImg(updatetime,MyApplication.todayWeather.getType());
@@ -541,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
+            switch (menuItem.getItemId()) {     //标题栏图标监听
                 case R.id.base_action_city:
                     onRefresh();
                     break;

@@ -14,7 +14,7 @@
         android:id="@+id/weather_today"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/main_night"
+        android:background="@drawable/main_sun"
         android:layout_below="@id/info_title"
         android:padding="10dip" >
         <!-- 城市名称 -->
@@ -109,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dip"
-                    android:src="@drawable/biz_plugin_weather_0_50" />
+                    android:src="@drawable/biz_plugin_weather_0_50"/>
             </LinearLayout>
 
             <!-- 污染等级(重度污染) -->

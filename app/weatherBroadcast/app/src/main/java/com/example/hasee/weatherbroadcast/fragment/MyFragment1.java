@@ -73,8 +73,22 @@ public class MyFragment1 extends Fragment{
         t = (TextView) view.findViewById(R.id.wind);
         t.setText("风力:"+MyApplication.todayWeather.getFengli());
         ImageView i=(ImageView) view.findViewById(R.id.pm2_5_img);
-        if(null!=MyApplication.todayWeather.getPmImg())
-            i.setImageDrawable(MyApplication.todayWeather.getPmImg().getDrawable());
+        int pm=0;
+        if(null!=MyApplication.todayWeather.getPm25())
+            pm=Integer.parseInt(MyApplication.todayWeather.getPm25());
+        if(pm<=50){
+            i.setImageResource(R.drawable.biz_plugin_weather_0_50);
+        }else if(pm<=100){
+            i.setImageResource(R.drawable.biz_plugin_weather_51_100);
+        }else if(pm<=150){
+            i.setImageResource(R.drawable.biz_plugin_weather_101_150);
+        }else if(pm<=200){
+            i.setImageResource(R.drawable.biz_plugin_weather_151_200);
+        }else if(pm<=300){
+            i.setImageResource(R.drawable.biz_plugin_weather_201_300);
+        }else{
+            i.setImageResource(R.drawable.biz_plugin_weather_greater_300);
+        }
         i=(ImageView) view.findViewById(R.id.weather_img);
         if(null!=MyApplication.todayWeather.getWeatherImg())
             i.setImageDrawable(MyApplication.todayWeather.getWeatherImg().getDrawable());
