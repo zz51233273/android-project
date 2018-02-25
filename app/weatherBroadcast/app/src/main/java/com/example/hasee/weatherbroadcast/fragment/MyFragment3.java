@@ -101,6 +101,15 @@ public class MyFragment3 extends Fragment{
             case "雨夹雪":
                 forecastWeather.setWeatherImg(R.drawable.rain_with_snow);
                 break;
+            case "小雪":
+                forecastWeather.setWeatherImg(R.drawable.small_snow);
+                break;
+            case "中雪":
+                forecastWeather.setWeatherImg(R.drawable.middle_snow);
+                break;
+            case "中到大雪":
+                forecastWeather.setWeatherImg(R.drawable.middle_snow);
+                break;
             case "大雪":
                 forecastWeather.setWeatherImg(R.drawable.big_snow);
                 break;

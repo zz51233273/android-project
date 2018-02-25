@@ -20,7 +20,6 @@
             android:background="@drawable/title_sun"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-
             <TextView
                 android:id="@+id/title_city_name"
                 android:layout_width="fill_parent"
@@ -28,7 +27,7 @@
                 android:layout_marginRight="46dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="5dip"
-                android:text="北京天气"
+                android:text="天气"
                 android:textColor="#ffffffff"
                 android:textSize="17sp" />
 
