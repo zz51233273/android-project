@@ -1,0 +1,153 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
+    <RelativeLayout
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center" >
+        <FrameLayout
+            android:id="@+id/phone_number_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:gravity="center" >
+
+            <EditText
+                android:id="@+id/phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:maxLength="20"
+                android:gravity="bottom">
+            </EditText>
+            <TextView
+                android:id="@+id/contry_sn"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginTop="4dp"
+                android:gravity="bottom"
+                android:text="+62"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:visibility="invisible" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:textColor="@color/black"
+                android:text="手机号"/>
+            <ImageView
+                android:id="@+id/phone_number_clear"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/clear_text" />
+        </FrameLayout>
+        <!--
+        <FrameLayout
+            android:id="@+id/send_identity_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/phone_number_layout">
+            <Button
+                android:id="@+id/bt_send_identity"
+                android:layout_width="95dp"
+                android:layout_height="45dp"
+                android:text="发送验证码"
+                android:layout_gravity="right"/>
+        </FrameLayout>
+        -->
+        <FrameLayout
+            android:id="@+id/identity_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/phone_number_layout"
+            android:layout_marginTop="6dp"
+            android:gravity="center" >
+            <EditText
+                android:id="@+id/identity"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="textPassword"
+                android:layout_marginTop="8dp"
+                android:maxLength="20"
+                android:gravity="bottom">
+            </EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:textColor="@color/black"
+                android:text="验证码"/>
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/usercode_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/identity_layout"
+            android:layout_marginTop="6dp"
+            android:gravity="center" >
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:gravity="bottom">
+            </EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:textColor="@color/black"
+                android:text="密码"/>
+            <ImageView
+                android:id="@+id/pwd_eye"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/close_eye"/>
+
+        </FrameLayout>
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/usercode_layout"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/login"
+            android:layout_below="@id/login"
+            android:background="#00000000"
+            android:gravity="left|center_vertical"
+            android:text="注册"
+            android:textSize="16sp"
+            android:visibility="visible" />
+        <Button
+            android:id="@+id/forgive_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/login"
+            android:layout_below="@id/login"
+            android:background="#00000000"
+            android:text="忘记密码?"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+</RelativeLayout>
